@@ -80,11 +80,19 @@ export default function Preview() {
                 </Link>
 
                 <div className="flex items-center gap-2 lg:gap-3">
-                    <Button variant="outline" size="sm" className="rounded-xl h-10 px-4 border-opacity-30" style={{ background: t.btnBg, borderColor: t.btnBorder, color: t.text }}>
+                    <Button variant="outline" size="sm" className="rounded-xl h-10 px-4 border-opacity-30" style={{ background: t.btnBg, borderColor: t.btnBorder, color: t.text }}
+                        onClick={() => { navigator.clipboard.writeText(window.location.href) }}>
                         <Share2 className="w-4 h-4 sm:mr-2" />
                         <span className="hidden sm:inline">Share Preview</span>
                     </Button>
-                    <Button size="sm" className="h-10 px-6 rounded-xl shadow-xl shadow-primary/20 font-bold">
+                    <Button size="sm" className="h-10 px-6 rounded-xl shadow-xl shadow-primary/20 font-bold" onClick={() => {
+                        const area = document.getElementById('resume-preview-area')
+                        if (!area) return
+                        const w = window.open('', '_blank')
+                        w.document.write(`<!DOCTYPE html><html><head><title>${resumeData.name || 'Resume'}</title><style>@page{size:letter;margin:0}*{margin:0;padding:0;box-sizing:border-box}body{width:8.5in;min-height:11in;margin:0 auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>${area.innerHTML}</body></html>`)
+                        w.document.close()
+                        setTimeout(() => { w.focus(); w.print(); w.close() }, 400)
+                    }}>
                         <Download className="w-4 h-4 sm:mr-2" />
                         <span className="hidden sm:inline">Download PDF</span>
                     </Button>
@@ -101,6 +109,7 @@ export default function Preview() {
                 </div>
 
                 <motion.div
+                    id="resume-preview-area"
                     key={templateId}
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -108,7 +117,15 @@ export default function Preview() {
 
                     {/* Floating Controls for PDF */}
                     <div className="absolute -left-16 top-0 hidden xl:flex flex-col gap-3">
-                        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl bg-white border-slate-200 shadow-xl text-slate-400 hover:text-primary hover:border-primary transition-all">
+                        <Button variant="outline" size="icon" className="h-12 w-12 rounded-2xl bg-white border-slate-200 shadow-xl text-slate-400 hover:text-primary hover:border-primary transition-all"
+                            onClick={() => {
+                                const area = document.getElementById('resume-preview-area')
+                                if (!area) return
+                                const w = window.open('', '_blank')
+                                w.document.write(`<!DOCTYPE html><html><head><title>${resumeData.name || 'Resume'}</title><style>@page{size:letter;margin:0}*{margin:0;padding:0;box-sizing:border-box}body{width:8.5in;min-height:11in;margin:0 auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>${area.innerHTML}</body></html>`)
+                                w.document.close()
+                                setTimeout(() => { w.focus(); w.print(); w.close() }, 400)
+                            }}>
                             <Printer className="w-5 h-5" />
                         </Button>
                     </div>

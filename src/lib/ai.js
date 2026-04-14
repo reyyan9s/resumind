@@ -1,4 +1,5 @@
-const ENDPOINT = "/api/rewrite"
+const baseUrl = import.meta.env.VITE_APP_URL || window.location.origin;
+const ENDPOINT = `${baseUrl}/api/rewrite`;
 
 /**
  * Rewrites/generates a professional executive summary securely via the backend proxy.

@@ -281,7 +281,14 @@ export default function Builder() {
                             <LayoutTemplate className="w-4 h-4 mr-2" /> Templates
                         </Button>
                     </Link>
-                    <Button size="sm" className="h-11 px-6 rounded-xl shadow-2xl shadow-primary/25 font-black text-[13px]">
+                    <Button size="sm" className="h-11 px-6 rounded-xl shadow-2xl shadow-primary/25 font-black text-[13px]" onClick={() => {
+                        const area = document.getElementById('resume-print-area')
+                        if (!area) return
+                        const w = window.open('', '_blank')
+                        w.document.write(`<!DOCTYPE html><html><head><title>${resumeData.name || 'Resume'}</title><style>@page{size:letter;margin:0}*{margin:0;padding:0;box-sizing:border-box}body{width:8.5in;min-height:11in;margin:0 auto;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style></head><body>${area.innerHTML}</body></html>`)
+                        w.document.close()
+                        setTimeout(() => { w.focus(); w.print(); w.close() }, 400)
+                    }}>
                         <Download className="w-4 h-4 mr-2" /> Export PDF
                     </Button>
                 </div>
@@ -638,6 +645,7 @@ export default function Builder() {
 
                     {/* The Resume A4 Paper */}
                     <motion.div
+                        id="resume-print-area"
                         key={templateId}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
